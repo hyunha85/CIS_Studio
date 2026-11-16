@@ -80,8 +80,8 @@ window.CIS_SLIDES = CIS_SOURCE_CONFIG.flatMap(source =>
       `${source.prefix}-${String(number).padStart(2, "0")}`;
 
     const thumbnail = source.folder
-      ? `/thumbnails/${source.folder}/슬라이드${number}.PNG`
-      : `/thumbnails/${id}.PNG`;
+      ? `/thumbnail/${source.folder}/슬라이드${number}.PNG`
+      : `/thumbnail/${id}.PNG`;
 
     return {
       id,
@@ -136,7 +136,7 @@ window.CIS_SLIDES.push(
         title: `${source.name} ${number}`,
 
         thumbnail:
-          `/thumbnails/${source.folder}/슬라이드${number}.PNG`,
+          `/thumbnail/${source.folder}/슬라이드${number}.PNG`,
 
         topicIds: [source.topicId],
       };
