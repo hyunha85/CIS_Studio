@@ -1,0 +1,17 @@
+{
+  "name": "my-cis-maker",
+  "version": "1.0.0",
+  "description": "선택한 슬라이드를 병합하여 PPT로 제공하는 CIS 웹페이지",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1",
+    "pptx-automizer": "^0.9.3"
+  }
+}
