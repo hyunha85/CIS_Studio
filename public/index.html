@@ -392,10 +392,13 @@
     let finalRemovePointer = null;
 
     /*
-     * 01번 대주제만 처음부터 펼친다.
+     * 최초 진입 시 모바일(700px 이하)은 모두 접고, 그 외에는 01번만 펼친다.
+     * 이후 화면 크기가 바뀌어도 사용자가 변경한 펼침 상태를 유지한다.
      * 접기/펼치기는 선택 상태에 영향을 주지 않는다.
      */
-    const expandedCategoryIds = new Set(["audience"]);
+    const expandedCategoryIds = new Set(
+      window.matchMedia("(max-width: 700px)").matches ? [] : ["audience"]
+    );
 
     /*
      * 현재 미리보기로 펼쳐진 소주제
