@@ -1263,6 +1263,24 @@ h1 {
 
 }
 
+.category-preview-group.is-new-selection {
+  animation:topic-selection-enter .25s ease-out;
+}
+.category-preview-group.is-new-selection ~ .category-preview-group {
+  animation:topic-selection-shift .25s ease-out;
+}
+@keyframes topic-selection-enter {
+  from {opacity:0;transform:translateY(-10px);}
+  to {opacity:1;transform:translateY(0);}
+}
+@keyframes topic-selection-shift {
+  from {transform:translateY(-10px);}
+  to {transform:translateY(0);}
+}
+@media (prefers-reduced-motion:reduce) {
+  .category-preview-group.is-new-selection,
+  .category-preview-group.is-new-selection ~ .category-preview-group {animation:none;}
+}
 .category-preview-group + .category-preview-group {
   margin-top: 18px;
   padding-top: 18px;
