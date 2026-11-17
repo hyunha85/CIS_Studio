@@ -478,15 +478,18 @@
      * 카테고리 메뉴 생성
      */
     // Selection IDs are independent; a fresh selection always joins the end.
+    let pendingTopicFeedback = null;
     function setTopicSelected(topicId, selected) {
       const index = selectedTopicOrder.indexOf(topicId);
       if (selected) {
         if (index >= 0) return;
+        pendingTopicFeedback = { id: topicId, x: window.scrollX, y: window.scrollY };
         selectedTopicOrder.push(topicId);
         const previousGroupIndex = finalGroupOrder.indexOf(topicId);
         if (previousGroupIndex >= 0) finalGroupOrder.splice(previousGroupIndex, 1);
         finalGroupOrder.push(topicId);
       } else if (index >= 0) {
+        if (pendingTopicFeedback?.id === topicId) pendingTopicFeedback = null;
         selectedTopicOrder.splice(index, 1);
       }
       setFinalRemoveIntent(null);
@@ -609,7 +612,8 @@
           return;
         }
 
-        const selectedTopics = selectedTopicOrder
+        // Reverse a display-only copy; allocation and PPT ordering stay unchanged.
+        const selectedTopics = [...selectedTopicOrder].reverse()
           .filter(topicId =>
             category.children.some(topic => topic.id === topicId)
           )
@@ -638,7 +642,7 @@
             const topicSlides = getTopicSlides(topic.id);
 
             return `
-              <section class="category-preview-group">
+              <section class="category-preview-group${pendingTopicFeedback?.id === topic.id ? ' is-new-selection' : ''}" data-selected-topic-id="${escapeHtml(topic.id)}">
                 <div class="category-preview-head">
                   <strong>${escapeHtml(topic.name)}</strong>
                   <span class="slide-click-hint">*각 슬라이드를 클릭하면 크게 볼 수 있습니다</span>
@@ -676,6 +680,19 @@
           })
           .join("");
       });
+      if (pendingTopicFeedback) {
+        const { id, x, y } = pendingTopicFeedback;
+        const item = menu.querySelector(`[data-selected-topic-id="${CSS.escape(id)}"]`);
+        // Only scroll an actual vertical list scroller, never scrollIntoView.
+        for (let parent = item?.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+          if (parent.scrollHeight > parent.clientHeight && /^(auto|scroll)$/.test(getComputedStyle(parent).overflowY)) {
+            parent.scrollTop = 0;
+            break;
+          }
+        }
+        if (window.scrollX !== x || window.scrollY !== y) window.scrollTo({ left: x, top: y, behavior: 'instant' });
+        pendingTopicFeedback = null;
+      }
     }
 
     /* 선택 상태에 맞춰 다운로드 버튼을 갱신한다. */
