@@ -1263,6 +1263,16 @@ h1 {
 
 }
 
+.category-preview-group.is-new-selection {
+  animation:topic-selection-feedback .5s ease-out;
+}
+@keyframes topic-selection-feedback {
+  from {box-shadow:inset 4px 0 var(--cis-lime),inset 0 0 0 1px var(--cis-navy);}
+  to {box-shadow:inset 4px 0 transparent,inset 0 0 0 1px transparent;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .category-preview-group.is-new-selection {animation:none;}
+}
 .category-preview-group + .category-preview-group {
   margin-top: 18px;
   padding-top: 18px;
